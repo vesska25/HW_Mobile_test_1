@@ -1,4 +1,4 @@
-package com.vesska.mobile.iOS;
+package com.vesska.mobile.ios;
 
 import com.vesska.mobile.TestBase;
 import org.junit.jupiter.api.Tag;

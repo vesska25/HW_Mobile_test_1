@@ -15,7 +15,7 @@ public class AndroidTest extends TestBase {
 
     @Test
     @Tag("android")
-    void SearchForGermanyPageTest() {
+    void searchForGermanyPageTest() {
         step("Type search", () -> {
             $(accessibilityId("Search Wikipedia")).click();
             $(id("org.wikipedia.alpha:id/search_src_text")).sendKeys("Germany");
