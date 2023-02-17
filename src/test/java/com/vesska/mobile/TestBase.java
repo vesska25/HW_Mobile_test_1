@@ -1,7 +1,9 @@
 package com.vesska.mobile;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import com.vesska.drivers.MobileDriver;
 import com.vesska.helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
@@ -15,7 +17,17 @@ import static com.codeborne.selenide.Selenide.*;
 public class TestBase {
     @BeforeAll
     static void beforeAll() {
-        Configuration.browser = BrowserstackDriver.class.getName();
+        switch (System.getProperty("env")) {
+            case "android":
+            case "ios":
+                Configuration.browser = BrowserstackDriver.class.getName();
+                break;
+            case "mobile":
+                Configuration.browser = MobileDriver.class.getName();
+                break;
+        }
+        Configuration.timeout = 15000;
+        Configuration.pageLoadTimeout = 15000;
         Configuration.browserSize = null;
     }
 
@@ -28,11 +40,8 @@ public class TestBase {
     @AfterEach
     void addAttachments() {
         String sessionId = sessionId().toString();
-
         Attach.pageSource();
-
-        closeWebDriver();
-
-        Attach.addVideo(sessionId);
+        Selenide.closeWebDriver();
+        if (!System.getProperty("env").equals("mobile")) Attach.addVideo(sessionId);
     }
 }
